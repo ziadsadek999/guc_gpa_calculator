@@ -12,11 +12,9 @@ class SemesterWidget extends StatefulWidget {
 class _SemesterWidgetState extends State<SemesterWidget> {
   @override
   Widget build(BuildContext context) {
-    //return a collabsible widget
     return ExpansionTile(
-      title: Text(widget.semester.name),
+      title: Text(widget.semester.name, style: const TextStyle(fontSize: 24)),
       children: [
-        //return a list of courses
         for (var course in widget.semester.courses) CourseWidget(course: course)
       ],
     );
