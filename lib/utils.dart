@@ -51,7 +51,15 @@ class Utils {
     return db.createCourse(entry);
   }
 
+  static Future<bool> updateCourse(CoursesCompanion entry) {
+    return db.updateCourse(entry);
+  }
+
   static Stream<List<Semester>> getAllSemesters() {
     return db.getAllSemesters();
+  }
+
+  static Future<int> deleteCourse(CoursesCompanion course) {
+    return db.deleteCourse(course);
   }
 }

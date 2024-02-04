@@ -52,6 +52,14 @@ class AppDatabase extends _$AppDatabase {
     return into(courses).insert(entry);
   }
 
+  Future<bool> updateCourse(CoursesCompanion entry) {
+    return update(courses).replace(entry);
+  }
+
+  Future<int> deleteCourse(CoursesCompanion entry) {
+    return delete(courses).delete(entry);
+  }
+
   @override
   MigrationStrategy get migration =>
       MigrationStrategy(onUpgrade: (migrator, from, to) async {
