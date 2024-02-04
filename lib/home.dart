@@ -45,16 +45,30 @@ class _MyHomePageState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showModalBottomSheet<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return CreateSemester();
-            },
-          );
+          showNewExpenseBottomSheet(context);
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void showNewExpenseBottomSheet(BuildContext ctx) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: ctx,
+        builder: (sheetContext) {
+          return Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
+              color: Colors.white,
+            ),
+            child: CreateSemester(),
+          );
+        },
+        isScrollControlled: true);
   }
 }
