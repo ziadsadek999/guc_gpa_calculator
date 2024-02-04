@@ -58,4 +58,8 @@ class Utils {
   static Stream<List<Semester>> getAllSemesters() {
     return db.getAllSemesters();
   }
+
+  static Future<int> deleteCourse(CoursesCompanion course) {
+    return db.deleteCourse(course);
+  }
 }

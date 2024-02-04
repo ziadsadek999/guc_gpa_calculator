@@ -1,5 +1,4 @@
-// stateless widget with course details
-
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:guc_gpa_calculator/components/create_course.dart';
 import 'package:guc_gpa_calculator/database.dart';
@@ -30,10 +29,35 @@ class CourseWidget extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/');
+                  showDeleteConfirmationDialog(context);
                 },
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Are you sure?"),
+        content: const Text("Do you want to delete this course?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () {
+              Utils.deleteCourse(CoursesCompanion(id: Value(course.id)));
+              Navigator.of(ctx).pop();
+            },
+            child: const Text("Yes"),
           ),
         ],
       ),
