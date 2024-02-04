@@ -27,15 +27,8 @@ class $SemestersTable extends Semesters
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
-  static const VerificationMeta _seasonMeta = const VerificationMeta('season');
   @override
-  late final GeneratedColumn<int> season = GeneratedColumn<int>(
-      'season', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
-  @override
-  List<GeneratedColumn> get $columns => [id, name, season];
+  List<GeneratedColumn> get $columns => [id, name];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -55,12 +48,6 @@ class $SemestersTable extends Semesters
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('season')) {
-      context.handle(_seasonMeta,
-          season.isAcceptableOrUnknown(data['season']!, _seasonMeta));
-    } else if (isInserting) {
-      context.missing(_seasonMeta);
-    }
     return context;
   }
 
@@ -74,8 +61,6 @@ class $SemestersTable extends Semesters
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      season: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}season'])!,
     );
   }
 
@@ -88,14 +73,12 @@ class $SemestersTable extends Semesters
 class Semester extends DataClass implements Insertable<Semester> {
   final int id;
   final String name;
-  final int season;
-  const Semester({required this.id, required this.name, required this.season});
+  const Semester({required this.id, required this.name});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['season'] = Variable<int>(season);
     return map;
   }
 
@@ -103,7 +86,6 @@ class Semester extends DataClass implements Insertable<Semester> {
     return SemestersCompanion(
       id: Value(id),
       name: Value(name),
-      season: Value(season),
     );
   }
 
@@ -113,7 +95,6 @@ class Semester extends DataClass implements Insertable<Semester> {
     return Semester(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      season: serializer.fromJson<int>(json['season']),
     );
   }
   @override
@@ -122,69 +103,55 @@ class Semester extends DataClass implements Insertable<Semester> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'season': serializer.toJson<int>(season),
     };
   }
 
-  Semester copyWith({int? id, String? name, int? season}) => Semester(
+  Semester copyWith({int? id, String? name}) => Semester(
         id: id ?? this.id,
         name: name ?? this.name,
-        season: season ?? this.season,
       );
   @override
   String toString() {
     return (StringBuffer('Semester(')
           ..write('id: $id, ')
-          ..write('name: $name, ')
-          ..write('season: $season')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, season);
+  int get hashCode => Object.hash(id, name);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Semester &&
-          other.id == this.id &&
-          other.name == this.name &&
-          other.season == this.season);
+      (other is Semester && other.id == this.id && other.name == this.name);
 }
 
 class SemestersCompanion extends UpdateCompanion<Semester> {
   final Value<int> id;
   final Value<String> name;
-  final Value<int> season;
   const SemestersCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
-    this.season = const Value.absent(),
   });
   SemestersCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required int season,
-  })  : name = Value(name),
-        season = Value(season);
+  }) : name = Value(name);
   static Insertable<Semester> custom({
     Expression<int>? id,
     Expression<String>? name,
-    Expression<int>? season,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
-      if (season != null) 'season': season,
     });
   }
 
-  SemestersCompanion copyWith(
-      {Value<int>? id, Value<String>? name, Value<int>? season}) {
+  SemestersCompanion copyWith({Value<int>? id, Value<String>? name}) {
     return SemestersCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
-      season: season ?? this.season,
     );
   }
 
@@ -197,9 +164,6 @@ class SemestersCompanion extends UpdateCompanion<Semester> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (season.present) {
-      map['season'] = Variable<int>(season.value);
-    }
     return map;
   }
 
@@ -207,8 +171,7 @@ class SemestersCompanion extends UpdateCompanion<Semester> {
   String toString() {
     return (StringBuffer('SemestersCompanion(')
           ..write('id: $id, ')
-          ..write('name: $name, ')
-          ..write('season: $season')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }

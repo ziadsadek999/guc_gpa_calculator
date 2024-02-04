@@ -1,8 +1,11 @@
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:guc_gpa_calculator/components/accumulative_gpa.dart';
+import 'package:guc_gpa_calculator/components/create_semester.dart';
 import 'package:guc_gpa_calculator/components/semester.dart';
 import 'package:guc_gpa_calculator/database.dart';
 import 'package:guc_gpa_calculator/utils.dart';
+import 'package:flutter/widgets.dart' as prefix;
 
 class Home extends StatefulWidget {
   Home({super.key});
@@ -20,7 +23,7 @@ class _MyHomePageState extends State<Home> {
         title: const Text("GUC GPA Calculator"),
       ),
       body: Center(
-        child: Column(
+        child: prefix.Column(
           children: [
             const AccumulativeGpa(),
             StreamBuilder(
@@ -28,7 +31,7 @@ class _MyHomePageState extends State<Home> {
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Semester>> snapshot) {
                   if (snapshot.hasData) {
-                    return Column(
+                    return prefix.Column(
                       children: snapshot.data!
                           .map((semester) => SemesterWidget(semester: semester))
                           .toList(),
@@ -41,7 +44,14 @@ class _MyHomePageState extends State<Home> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return CreateSemester();
+            },
+          );
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
