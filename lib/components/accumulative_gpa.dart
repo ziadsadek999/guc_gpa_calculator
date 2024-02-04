@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:guc_gpa_calculator/models/grade.dart';
 
 class AccumulativeGpa extends StatelessWidget {
-  final Grade total;
-  final Grade languages;
-  const AccumulativeGpa(
-      {super.key, required this.total, required this.languages});
+  const AccumulativeGpa({super.key});
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        Text("Total GPA: ${total.grade * total.hours}"),
-        Text("Languages GPA: ${languages.grade * languages.hours}"),
+        Text("Total GPA: 0.7"),
+        Text("Languages GPA: 0.8"),
       ],
     );
   }

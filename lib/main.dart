@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:guc_gpa_calculator/database.dart';
 import 'package:guc_gpa_calculator/home.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

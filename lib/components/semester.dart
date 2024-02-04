@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guc_gpa_calculator/components/course.dart';
-import 'package:guc_gpa_calculator/models/semester.dart';
+import 'package:guc_gpa_calculator/database.dart';
+import 'package:guc_gpa_calculator/utils.dart';
 
 class SemesterWidget extends StatefulWidget {
   final Semester semester;
@@ -15,7 +16,23 @@ class _SemesterWidgetState extends State<SemesterWidget> {
     return ExpansionTile(
       title: Text(widget.semester.name, style: const TextStyle(fontSize: 24)),
       children: [
-        for (var course in widget.semester.courses) CourseWidget(course: course)
+        StreamBuilder(
+            stream: Utils.getSemesterCourses(widget.semester),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Course>> snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: snapshot.data!
+                      .map((course) => Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            child: CourseWidget(course: course),
+                          ))
+                      .toList(),
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            })
       ],
     );
   }
