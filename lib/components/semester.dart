@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guc_gpa_calculator/components/course.dart';
 import 'package:guc_gpa_calculator/components/create_course.dart';
+import 'package:guc_gpa_calculator/components/semester_header.dart';
 import 'package:guc_gpa_calculator/database.dart';
 import 'package:guc_gpa_calculator/utils.dart';
 
@@ -15,7 +16,7 @@ class _SemesterWidgetState extends State<SemesterWidget> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text(widget.semester.name, style: const TextStyle(fontSize: 24)),
+      title: SemesterHeader(semester: widget.semester),
       children: [
         StreamBuilder(
             stream: Utils.getSemesterCourses(widget.semester),

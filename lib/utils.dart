@@ -62,4 +62,18 @@ class Utils {
   static Future<int> deleteCourse(CoursesCompanion course) {
     return db.deleteCourse(course);
   }
+
+  static Stream<List<Course>> getAllCourses() {
+    return db.getAllCourses();
+  }
+
+  static double calculateGrade(List<Course> courses) {
+    double totalGrade = 0;
+    double totalHours = 0;
+    for (var course in courses) {
+      totalGrade += course.grade * course.hours;
+      totalHours += course.hours;
+    }
+    return totalGrade / totalHours;
+  }
 }

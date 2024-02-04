@@ -40,6 +40,10 @@ class AppDatabase extends _$AppDatabase {
     return (select(courses)..where((c) => c.semester.equals(s.id))).watch();
   }
 
+  Stream<List<Course>> getAllCourses() {
+    return select(courses).watch();
+  }
+
   Stream<List<Semester>> getAllSemesters() {
     return select(semesters).watch();
   }
