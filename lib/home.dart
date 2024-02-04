@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:guc_gpa_calculator/components/accumulative_gpa.dart';
 import 'package:guc_gpa_calculator/components/create_semester.dart';
@@ -45,7 +44,7 @@ class _MyHomePageState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showNewExpenseBottomSheet(context);
+          showNewSemesterBottomSheet(context);
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
@@ -53,7 +52,7 @@ class _MyHomePageState extends State<Home> {
     );
   }
 
-  void showNewExpenseBottomSheet(BuildContext ctx) {
+  void showNewSemesterBottomSheet(BuildContext ctx) {
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: ctx,

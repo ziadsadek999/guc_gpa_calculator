@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:guc_gpa_calculator/database.dart';
 import 'package:guc_gpa_calculator/utils.dart';
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guc_gpa_calculator/components/course.dart';
+import 'package:guc_gpa_calculator/components/create_course.dart';
 import 'package:guc_gpa_calculator/database.dart';
 import 'package:guc_gpa_calculator/utils.dart';
 
@@ -32,8 +33,42 @@ class _SemesterWidgetState extends State<SemesterWidget> {
               } else {
                 return const Center(child: CircularProgressIndicator());
               }
-            })
+            }),
+        _buildAddCourse(),
       ],
     );
+  }
+
+  Widget _buildAddCourse() {
+    return ElevatedButton(
+      onPressed: () {
+        showNewCourseBottomSheet(context);
+      },
+      child: const Text(
+        "Add Course",
+        style: TextStyle(fontSize: 20),
+      ),
+    );
+  }
+
+  void showNewCourseBottomSheet(BuildContext ctx) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: ctx,
+        builder: (sheetContext) {
+          return Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
+              color: Colors.white,
+            ),
+            child: CreateCourse(
+              semester: widget.semester,
+            ),
+          );
+        },
+        isScrollControlled: true);
   }
 }
