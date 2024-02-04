@@ -4,8 +4,9 @@ import 'package:guc_gpa_calculator/database.dart';
 import 'package:guc_gpa_calculator/utils.dart';
 
 class CreateCourse extends StatefulWidget {
-  final Semester semester;
-  const CreateCourse({super.key, required this.semester});
+  final Semester? semester;
+  final Course? course;
+  const CreateCourse({super.key, this.semester, this.course});
   @override
   State<StatefulWidget> createState() {
     return CreateCourseState();
@@ -27,10 +28,18 @@ class CreateCourseState extends State<CreateCourse> {
     "D": 4,
     "F": 5
   };
-  final name = TextEditingController();
-  final hours = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController hours = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   double grade = 0;
+  @override
+  void initState() {
+    super.initState();
+    name = TextEditingController(text: widget.course?.name);
+    hours = TextEditingController(text: widget.course?.hours.toString());
+    grade = widget.course?.grade ?? 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -76,6 +85,12 @@ class CreateCourseState extends State<CreateCourse> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: DropdownButtonFormField<String>(
+                  value: widget.course != null
+                      ? gradesMap.keys.firstWhere(
+                          (String key) =>
+                              gradesMap[key] == widget.course!.grade,
+                        )
+                      : null,
                   menuMaxHeight: MediaQuery.of(context).size.height / 4,
                   decoration: const InputDecoration(labelText: 'Grade'),
                   items: gradesMap.keys
@@ -102,12 +117,23 @@ class CreateCourseState extends State<CreateCourse> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Utils.createCourse(CoursesCompanion(
-                        name: Value(name.text),
-                        hours: Value(int.parse(hours.text)),
-                        grade: Value(grade),
-                        semester: Value(widget.semester.id),
-                      ));
+                      if (widget.semester != null) {
+                        Utils.createCourse(CoursesCompanion(
+                          name: Value(name.text),
+                          hours: Value(int.parse(hours.text)),
+                          grade: Value(grade),
+                          semester: Value(widget.semester!.id),
+                        ));
+                      } else {
+                        Utils.updateCourse(
+                          CoursesCompanion(
+                              id: Value(widget.course!.id),
+                              name: Value(name.text),
+                              hours: Value(int.parse(hours.text)),
+                              grade: Value(grade),
+                              semester: Value(widget.course!.semester)),
+                        );
+                      }
                       Navigator.of(context).pop();
                     }
                   },
