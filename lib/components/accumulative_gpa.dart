@@ -28,7 +28,8 @@ class AccumulativeGpaState extends State<AccumulativeGpa> {
                 ],
               );
             } else {
-              return const Text(" - 0 hours", style: TextStyle(fontSize: 24));
+              return const Text("Total GPA: 0 - 0 hours",
+                  style: TextStyle(fontSize: 24));
             }
           } else {
             return const Center(child: CircularProgressIndicator());

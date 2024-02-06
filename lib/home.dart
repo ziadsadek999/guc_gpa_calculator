@@ -17,39 +17,36 @@ class _MyHomePageState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("GUC GPA Calculator"),
-      ),
-      body: Center(
-        child: prefix.Column(
-          children: [
-            const AccumulativeGpa(),
-            StreamBuilder(
-                stream: Utils.getAllSemesters(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<Semester>> snapshot) {
-                  if (snapshot.hasData) {
-                    return prefix.Column(
-                      children: snapshot.data!
-                          .map((semester) => SemesterWidget(semester: semester))
-                          .toList(),
-                    );
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                })
-          ],
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text("GUC GPA Calculator"),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showNewSemesterBottomSheet(context);
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
+        body: SingleChildScrollView(
+          child: prefix.Column(
+            children: [
+              const AccumulativeGpa(),
+              StreamBuilder(
+                  stream: Utils.getAllSemesters(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Semester>> snapshot) {
+                    if (snapshot.hasData) {
+                      return prefix.Column(
+                        children: [
+                          ...snapshot.data!
+                              .map((semester) =>
+                                  SemesterWidget(semester: semester))
+                              .toList(),
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.1),
+                        ],
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  })
+            ],
+          ),
+        ));
   }
 
   void showNewSemesterBottomSheet(BuildContext ctx) {
@@ -65,7 +62,7 @@ class _MyHomePageState extends State<Home> {
               ),
               color: Colors.white,
             ),
-            child: CreateSemester(),
+            child: const CreateSemester(),
           );
         },
         isScrollControlled: true);

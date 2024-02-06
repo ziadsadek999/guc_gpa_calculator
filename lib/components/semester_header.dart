@@ -30,7 +30,7 @@ class SemesterHeaderState extends State<SemesterHeader> {
                       style: const TextStyle(fontSize: 24)),
                 ]);
               } else {
-                return const Text(" - 0 hours", style: TextStyle(fontSize: 24));
+                return const Text(" - 0 hours", style: TextStyle(fontSize: 14));
               }
             } else {
               return const Center(child: CircularProgressIndicator());

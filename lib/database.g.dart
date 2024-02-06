@@ -209,7 +209,7 @@ class $CoursesTable extends Courses with TableInfo<$CoursesTable, Course> {
   late final GeneratedColumn<double> grade = GeneratedColumn<double>(
       'grade', aliasedName, false,
       check: () =>
-          grade.isIn([0.7, 1, 1.3, 1.7, 2, 2.3, 2.7, 3, 3.3, 3.7, 4, 5]),
+          grade.isIn([0, 0.7, 1, 1.3, 1.7, 2, 2.3, 2.7, 3, 3.3, 3.7, 4, 5]),
       type: DriftSqlType.double,
       requiredDuringInsert: true);
   static const VerificationMeta _semesterMeta =

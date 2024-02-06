@@ -19,8 +19,8 @@ class Courses extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 64)();
   IntColumn get hours => integer()();
-  RealColumn get grade => real()
-      .check(grade.isIn([0.7, 1, 1.3, 1.7, 2, 2.3, 2.7, 3, 3.3, 3.7, 4, 5]))();
+  RealColumn get grade => real().check(
+      grade.isIn([0, 0.7, 1, 1.3, 1.7, 2, 2.3, 2.7, 3, 3.3, 3.7, 4, 5]))();
   IntColumn get semester => integer().references(Semesters, #id)();
   @override
   List<Set<Column>> get uniqueKeys => [
@@ -30,12 +30,15 @@ class Courses extends Table {
 
 @DriftDatabase(tables: [Semesters, Courses])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
-
+  AppDatabase() : super(_openConnection()) {
+    initialize();
+  }
   @override
   int get schemaVersion => 2;
+  Future<void> initialize() async {
+    await initSemesters();
+  }
 
-  Stream<List<Semester>> get allSemesters => select(semesters).watch();
   Stream<List<Course>> getSemesterCourses(Semester s) {
     return (select(courses)..where((c) => c.semester.equals(s.id))).watch();
   }
@@ -64,11 +67,37 @@ class AppDatabase extends _$AppDatabase {
     return delete(courses).delete(entry);
   }
 
+  Future<void> initSemesters() async {
+    await into(semesters)
+        .insert(SemestersCompanion.insert(name: "English Courses"));
+    int germanSemesterId =
+        await into(semesters).insert(SemestersCompanion.insert(name: "German"));
+    await initGermanCourses(germanSemesterId);
+    for (int i = 1; i <= 10; i++) {
+      await into(semesters)
+          .insert(SemestersCompanion.insert(name: "Semester $i"));
+      if (i % 2 == 0) {
+        await into(semesters).insert(SemestersCompanion.insert(
+            name: "Summer Semester ${(i / 2).floor()}"));
+      }
+    }
+  }
+
+  Future<void> initGermanCourses(int semesterId) async {
+    await into(courses).insert(CoursesCompanion.insert(
+        name: "German 1", hours: 2, grade: 0, semester: semesterId));
+    await into(courses).insert(CoursesCompanion.insert(
+        name: "German 2", hours: 4, grade: 0, semester: semesterId));
+    await into(courses).insert(CoursesCompanion.insert(
+        name: "German 3", hours: 6, grade: 0, semester: semesterId));
+    await into(courses).insert(CoursesCompanion.insert(
+        name: "German 4", hours: 8, grade: 0, semester: semesterId));
+  }
+
   @override
   MigrationStrategy get migration =>
       MigrationStrategy(onUpgrade: (migrator, from, to) async {
         if (from == 1) {
-          // We are telling the database to add the category column so it can be upgraded to version 2
           await migrator.drop(semesters);
           await migrator.createTable(semesters);
         }
