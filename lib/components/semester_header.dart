@@ -21,14 +21,10 @@ class SemesterHeaderState extends State<SemesterHeader> {
               (BuildContext context, AsyncSnapshot<List<Course>> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data!.isNotEmpty) {
-                return Row(children: [
-                  Text(
-                      " - ${snapshot.data!.map((e) => e.hours).reduce((a, b) => a + b)} hours",
-                      style: const TextStyle(fontSize: 24)),
-                  Text(
-                      " - ${Utils.calculateGrade(snapshot.data!).toStringAsFixed(2)} (${Utils.getGrade(Utils.calculateGrade(snapshot.data!))})",
-                      style: const TextStyle(fontSize: 24)),
-                ]);
+                if (widget.semester.name == "German") {
+                  return _buildGermanHeader(snapshot);
+                }
+                return _buildNormalHeader(snapshot);
               } else {
                 return const Text(" - 0 hours", style: TextStyle(fontSize: 14));
               }
@@ -36,6 +32,25 @@ class SemesterHeaderState extends State<SemesterHeader> {
               return const Center(child: CircularProgressIndicator());
             }
           }),
+    ]);
+  }
+
+  Widget _buildGermanHeader(AsyncSnapshot<List<Course>> snapshot) {
+    return Row(children: [
+      Text(
+          " - ${Utils.calculateGrade(snapshot.data!).toStringAsFixed(2)} (${Utils.getGrade(Utils.calculateGrade(snapshot.data!))})",
+          style: const TextStyle(fontSize: 14)),
+    ]);
+  }
+
+  Widget _buildNormalHeader(AsyncSnapshot<List<Course>> snapshot) {
+    return Row(children: [
+      Text(
+          " - ${snapshot.data!.map((e) => e.hours).reduce((a, b) => a + b)} hours",
+          style: const TextStyle(fontSize: 14)),
+      Text(
+          " - ${Utils.calculateGrade(snapshot.data!).toStringAsFixed(2)} (${Utils.getGrade(Utils.calculateGrade(snapshot.data!))})",
+          style: const TextStyle(fontSize: 14)),
     ]);
   }
 }

@@ -26,12 +26,14 @@ class CourseWidget extends StatelessWidget {
                   showEditCourseBottomSheet(context);
                 },
               ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  showDeleteConfirmationDialog(context);
-                },
-              ),
+              !course.name.contains("German")
+                  ? IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        showDeleteConfirmationDialog(context);
+                      },
+                    )
+                  : Container(),
             ],
           ),
         ],
@@ -54,7 +56,13 @@ class CourseWidget extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Utils.deleteCourse(CoursesCompanion(id: Value(course.id)));
+              if (course.semester == Utils.db.englishSemesterId) {
+                Utils.deleteEnglishCourse(
+                    CoursesCompanion(id: Value(course.id)));
+              } else {
+                Utils.deleteNormalCourse(
+                    CoursesCompanion(id: Value(course.id)));
+              }
               Navigator.of(ctx).pop();
             },
             child: const Text("Yes"),
