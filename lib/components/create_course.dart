@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:guc_gpa_calculator/database.dart';
 import 'package:guc_gpa_calculator/utils.dart';
 
@@ -15,6 +16,7 @@ class CreateCourse extends StatefulWidget {
 
 class CreateCourseState extends State<CreateCourse> {
   Map<String, double> gradesMap = {
+    "N/A": 0,
     "A+": 0.7,
     "A": 1,
     "A-": 1.3,
@@ -38,6 +40,23 @@ class CreateCourseState extends State<CreateCourse> {
     name = TextEditingController(text: widget.course?.name);
     hours = TextEditingController(text: widget.course?.hours.toString());
     grade = widget.course?.grade ?? 0;
+    if (!isGerman()) {
+      gradesMap.remove("N/A");
+    }
+  }
+
+  bool isGerman() {
+    return (widget.course == null &&
+            widget.semester!.id == Utils.db.germanSemesterId) ||
+        ((widget.course != null &&
+            widget.course!.semester == Utils.db.germanSemesterId));
+  }
+
+  bool isEnglish() {
+    return (widget.course == null &&
+            widget.semester!.id == Utils.db.englishSemesterId) ||
+        ((widget.course != null &&
+            widget.course!.semester == Utils.db.englishSemesterId));
   }
 
   @override
@@ -55,33 +74,45 @@ class CreateCourseState extends State<CreateCourse> {
           child: ListView(
             shrinkWrap: true,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: const InputDecoration(labelText: 'Course Name'),
-                  controller: name,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Add Course Name';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: const InputDecoration(labelText: 'Hours'),
-                  keyboardType: TextInputType.number,
-                  controller: hours,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Add Course Hours';
-                    }
-                    return null;
-                  },
-                ),
-              ),
+              !isGerman()
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        decoration:
+                            const InputDecoration(labelText: 'Course Name'),
+                        controller: name,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Add Course Name';
+                          }
+                          return null;
+                        },
+                      ),
+                    )
+                  : Container(),
+              !isGerman()
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^[1-9][0-9]*'))
+                        ],
+                        decoration: const InputDecoration(labelText: 'Hours'),
+                        keyboardType: TextInputType.number,
+                        controller: hours,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Add Course Hours';
+                          }
+                          if (int.parse(value) == 1) {
+                            return 'Courses Cannot Be less than 2 Hour Long';
+                          }
+                          return null;
+                        },
+                      ),
+                    )
+                  : Container(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: DropdownButtonFormField<String>(
@@ -118,21 +149,54 @@ class CreateCourseState extends State<CreateCourse> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       if (widget.semester != null) {
-                        Utils.createCourse(CoursesCompanion(
-                          name: Value(name.text),
-                          hours: Value(int.parse(hours.text)),
-                          grade: Value(grade),
-                          semester: Value(widget.semester!.id),
-                        ));
+                        if (widget.semester!.id == Utils.db.englishSemesterId) {
+                          Utils.createEnglishCourse(CoursesCompanion(
+                            name: Value(name.text),
+                            hours: Value(int.parse(hours.text)),
+                            grade: Value(grade),
+                            semester: Value(widget.semester!.id),
+                          ));
+                        } else {
+                          Utils.createNormalCourse(CoursesCompanion(
+                            name: Value(name.text),
+                            hours: Value(int.parse(hours.text)),
+                            grade: Value(grade),
+                            semester: Value(widget.semester!.id),
+                          ));
+                        }
                       } else {
-                        Utils.updateCourse(
-                          CoursesCompanion(
-                              id: Value(widget.course!.id),
-                              name: Value(name.text),
-                              hours: Value(int.parse(hours.text)),
-                              grade: Value(grade),
-                              semester: Value(widget.course!.semester)),
-                        );
+                        if (widget.course!.semester ==
+                            Utils.db.englishSemesterId) {
+                          Utils.updateEnglishCourse(
+                            CoursesCompanion(
+                                id: Value(widget.course!.id),
+                                name: Value(name.text),
+                                hours: Value(int.parse(hours.text)),
+                                grade: Value(grade),
+                                semester: Value(widget.course!.semester)),
+                          );
+                        } else {
+                          if (widget.course!.semester ==
+                              Utils.db.germanSemesterId) {
+                            Utils.updateGermanCourse(
+                              CoursesCompanion(
+                                  id: Value(widget.course!.id),
+                                  name: Value(name.text),
+                                  hours: Value(int.parse(hours.text)),
+                                  grade: Value(grade),
+                                  semester: Value(widget.course!.semester)),
+                            );
+                          } else {
+                            Utils.updateNormalCourse(
+                              CoursesCompanion(
+                                  id: Value(widget.course!.id),
+                                  name: Value(name.text),
+                                  hours: Value(int.parse(hours.text)),
+                                  grade: Value(grade),
+                                  semester: Value(widget.course!.semester)),
+                            );
+                          }
+                        }
                       }
                       Navigator.of(context).pop();
                     }

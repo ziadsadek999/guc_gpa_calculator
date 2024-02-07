@@ -209,7 +209,7 @@ class $CoursesTable extends Courses with TableInfo<$CoursesTable, Course> {
   late final GeneratedColumn<double> grade = GeneratedColumn<double>(
       'grade', aliasedName, false,
       check: () =>
-          grade.isIn([0.7, 1, 1.3, 1.7, 2, 2.3, 2.7, 3, 3.3, 3.7, 4, 5]),
+          grade.isIn([0, 0.7, 1, 1.3, 1.7, 2, 2.3, 2.7, 3, 3.3, 3.7, 4, 5]),
       type: DriftSqlType.double,
       requiredDuringInsert: true);
   static const VerificationMeta _semesterMeta =
@@ -470,13 +470,232 @@ class CoursesCompanion extends UpdateCompanion<Course> {
   }
 }
 
+class $GradesTable extends Grades with TableInfo<$GradesTable, Grade> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GradesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _hoursMeta = const VerificationMeta('hours');
+  @override
+  late final GeneratedColumn<int> hours = GeneratedColumn<int>(
+      'hours', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _gradeMeta = const VerificationMeta('grade');
+  @override
+  late final GeneratedColumn<double> grade = GeneratedColumn<double>(
+      'grade', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [name, hours, grade];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'grades';
+  @override
+  VerificationContext validateIntegrity(Insertable<Grade> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('hours')) {
+      context.handle(
+          _hoursMeta, hours.isAcceptableOrUnknown(data['hours']!, _hoursMeta));
+    } else if (isInserting) {
+      context.missing(_hoursMeta);
+    }
+    if (data.containsKey('grade')) {
+      context.handle(
+          _gradeMeta, grade.isAcceptableOrUnknown(data['grade']!, _gradeMeta));
+    } else if (isInserting) {
+      context.missing(_gradeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {name};
+  @override
+  Grade map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Grade(
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      hours: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}hours'])!,
+      grade: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}grade'])!,
+    );
+  }
+
+  @override
+  $GradesTable createAlias(String alias) {
+    return $GradesTable(attachedDatabase, alias);
+  }
+}
+
+class Grade extends DataClass implements Insertable<Grade> {
+  final String name;
+  final int hours;
+  final double grade;
+  const Grade({required this.name, required this.hours, required this.grade});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['name'] = Variable<String>(name);
+    map['hours'] = Variable<int>(hours);
+    map['grade'] = Variable<double>(grade);
+    return map;
+  }
+
+  GradesCompanion toCompanion(bool nullToAbsent) {
+    return GradesCompanion(
+      name: Value(name),
+      hours: Value(hours),
+      grade: Value(grade),
+    );
+  }
+
+  factory Grade.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Grade(
+      name: serializer.fromJson<String>(json['name']),
+      hours: serializer.fromJson<int>(json['hours']),
+      grade: serializer.fromJson<double>(json['grade']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'name': serializer.toJson<String>(name),
+      'hours': serializer.toJson<int>(hours),
+      'grade': serializer.toJson<double>(grade),
+    };
+  }
+
+  Grade copyWith({String? name, int? hours, double? grade}) => Grade(
+        name: name ?? this.name,
+        hours: hours ?? this.hours,
+        grade: grade ?? this.grade,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Grade(')
+          ..write('name: $name, ')
+          ..write('hours: $hours, ')
+          ..write('grade: $grade')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(name, hours, grade);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Grade &&
+          other.name == this.name &&
+          other.hours == this.hours &&
+          other.grade == this.grade);
+}
+
+class GradesCompanion extends UpdateCompanion<Grade> {
+  final Value<String> name;
+  final Value<int> hours;
+  final Value<double> grade;
+  final Value<int> rowid;
+  const GradesCompanion({
+    this.name = const Value.absent(),
+    this.hours = const Value.absent(),
+    this.grade = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GradesCompanion.insert({
+    required String name,
+    required int hours,
+    required double grade,
+    this.rowid = const Value.absent(),
+  })  : name = Value(name),
+        hours = Value(hours),
+        grade = Value(grade);
+  static Insertable<Grade> custom({
+    Expression<String>? name,
+    Expression<int>? hours,
+    Expression<double>? grade,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (name != null) 'name': name,
+      if (hours != null) 'hours': hours,
+      if (grade != null) 'grade': grade,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GradesCompanion copyWith(
+      {Value<String>? name,
+      Value<int>? hours,
+      Value<double>? grade,
+      Value<int>? rowid}) {
+    return GradesCompanion(
+      name: name ?? this.name,
+      hours: hours ?? this.hours,
+      grade: grade ?? this.grade,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (hours.present) {
+      map['hours'] = Variable<int>(hours.value);
+    }
+    if (grade.present) {
+      map['grade'] = Variable<double>(grade.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GradesCompanion(')
+          ..write('name: $name, ')
+          ..write('hours: $hours, ')
+          ..write('grade: $grade, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $SemestersTable semesters = $SemestersTable(this);
   late final $CoursesTable courses = $CoursesTable(this);
+  late final $GradesTable grades = $GradesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [semesters, courses];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [semesters, courses, grades];
 }
