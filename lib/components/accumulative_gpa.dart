@@ -15,6 +15,7 @@ class AccumulativeGpaState extends State<AccumulativeGpa> {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.32,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildAccGPACard("Accumulative GPA", Utils.getAllGrades()),
           _buildAccGPACard("GPA Excluding Languages", Utils.getNormalGrade()),
@@ -34,7 +35,7 @@ class AccumulativeGpaState extends State<AccumulativeGpa> {
             if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               Grade total = Utils.aggregateGrades(snapshot.data!);
               return Container(
-                margin: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+                margin: const EdgeInsets.fromLTRB(12, 16, 12, 0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   color: Colors.grey[200],

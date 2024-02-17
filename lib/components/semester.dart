@@ -29,6 +29,7 @@ class _SemesterWidgetState extends State<SemesterWidget> {
         title: SemesterHeader(semester: widget.semester),
         children: [
           Container(
+            width: double.infinity,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15),
@@ -69,7 +70,7 @@ class _SemesterWidgetState extends State<SemesterWidget> {
 
   Widget _buildAddCourse() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12, top: 12),
       child: ElevatedButton(
         onPressed: () {
           showNewCourseBottomSheet(context);

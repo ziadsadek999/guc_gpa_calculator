@@ -48,7 +48,7 @@ class Utils {
     return db.createSemester(entry);
   }
 
-  static Future<int> createNormalCourse(CoursesCompanion entry) {
+  static Future<bool> createNormalCourse(CoursesCompanion entry) {
     return db.createNormalCourse(entry);
   }
 
@@ -56,7 +56,7 @@ class Utils {
     return db.updateNormalCourse(entry);
   }
 
-  static Future<int> createEnglishCourse(CoursesCompanion entry) {
+  static Future<bool> createEnglishCourse(CoursesCompanion entry) {
     return db.createEnglishCourse(entry);
   }
 

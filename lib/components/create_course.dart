@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:guc_gpa_calculator/database.dart';
 import 'package:guc_gpa_calculator/utils.dart';
+import 'package:flutter/material.dart' as prefix;
 
 class CreateCourse extends StatefulWidget {
   final Semester? semester;
@@ -30,6 +31,7 @@ class CreateCourseState extends State<CreateCourse> {
     "D": 4,
     "F": 5
   };
+  bool showNameError = false;
   TextEditingController name = TextEditingController();
   TextEditingController hours = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -75,19 +77,41 @@ class CreateCourseState extends State<CreateCourse> {
             shrinkWrap: true,
             children: <Widget>[
               !isGerman()
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        decoration:
-                            const InputDecoration(labelText: 'Course Name'),
-                        controller: name,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Add Course Name';
-                          }
-                          return null;
-                        },
-                      ),
+                  ? prefix.Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            decoration:
+                                const InputDecoration(labelText: 'Course Name'),
+                            controller: name,
+                            onChanged: (_) {
+                              setState(() {
+                                showNameError = false;
+                              });
+                            },
+                            maxLength: 64,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Add Course Name';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        showNameError
+                            ? Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                    "A course with this name already exists",
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .error)),
+                              )
+                            : Container(),
+                      ],
                     )
                   : Container(),
               !isGerman()
@@ -98,6 +122,7 @@ class CreateCourseState extends State<CreateCourse> {
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^[1-9][0-9]*'))
                         ],
+                        maxLength: 2,
                         decoration: const InputDecoration(labelText: 'Hours'),
                         keyboardType: TextInputType.number,
                         controller: hours,
@@ -146,18 +171,21 @@ class CreateCourseState extends State<CreateCourse> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    bool valid = true;
                     if (_formKey.currentState!.validate()) {
                       if (widget.semester != null) {
                         if (widget.semester!.id == Utils.db.englishSemesterId) {
-                          Utils.createEnglishCourse(CoursesCompanion(
+                          valid =
+                              await Utils.createEnglishCourse(CoursesCompanion(
                             name: Value(name.text),
                             hours: Value(int.parse(hours.text)),
                             grade: Value(grade),
                             semester: Value(widget.semester!.id),
                           ));
                         } else {
-                          Utils.createNormalCourse(CoursesCompanion(
+                          valid =
+                              await Utils.createNormalCourse(CoursesCompanion(
                             name: Value(name.text),
                             hours: Value(int.parse(hours.text)),
                             grade: Value(grade),
@@ -167,7 +195,7 @@ class CreateCourseState extends State<CreateCourse> {
                       } else {
                         if (widget.course!.semester ==
                             Utils.db.englishSemesterId) {
-                          Utils.updateEnglishCourse(
+                          valid = await Utils.updateEnglishCourse(
                             CoursesCompanion(
                                 id: Value(widget.course!.id),
                                 name: Value(name.text),
@@ -178,7 +206,7 @@ class CreateCourseState extends State<CreateCourse> {
                         } else {
                           if (widget.course!.semester ==
                               Utils.db.germanSemesterId) {
-                            Utils.updateGermanCourse(
+                            valid = await Utils.updateGermanCourse(
                               CoursesCompanion(
                                   id: Value(widget.course!.id),
                                   name: Value(name.text),
@@ -187,7 +215,7 @@ class CreateCourseState extends State<CreateCourse> {
                                   semester: Value(widget.course!.semester)),
                             );
                           } else {
-                            Utils.updateNormalCourse(
+                            valid = await Utils.updateNormalCourse(
                               CoursesCompanion(
                                   id: Value(widget.course!.id),
                                   name: Value(name.text),
@@ -198,7 +226,13 @@ class CreateCourseState extends State<CreateCourse> {
                           }
                         }
                       }
-                      Navigator.of(context).pop();
+                      if (valid)
+                        Navigator.of(context).pop();
+                      else {
+                        setState(() {
+                          showNameError = true;
+                        });
+                      }
                     }
                   },
                   child: Text(

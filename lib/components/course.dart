@@ -12,7 +12,7 @@ class CourseWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final fontSize = const TextScaler.linear(1).scale(16);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+      padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -62,14 +62,23 @@ class CourseWidget extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text("Are you sure?"),
-        content: const Text("Do you want to delete this course?"),
+        title: Text(
+          "Are you sure?",
+          style: TextStyle(fontSize: const TextScaler.linear(1).scale(24)),
+        ),
+        content: Text("Do you want to delete this course?",
+            style: TextStyle(fontSize: const TextScaler.linear(1).scale(16))),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
             },
-            child: const Text("No"),
+            child: Text(
+              "No",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                  fontSize: const TextScaler.linear(1).scale(16)),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -82,7 +91,10 @@ class CourseWidget extends StatelessWidget {
               }
               Navigator.of(ctx).pop();
             },
-            child: const Text("Yes"),
+            child: Text(
+              "Yes",
+              style: TextStyle(fontSize: const TextScaler.linear(1).scale(16)),
+            ),
           ),
         ],
       ),

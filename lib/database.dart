@@ -82,7 +82,7 @@ class AppDatabase extends _$AppDatabase {
     return into(semesters).insert(entry);
   }
 
-  Future<int> createNormalCourse(CoursesCompanion entry) {
+  Future<bool> createNormalCourse(CoursesCompanion entry) {
     return transaction(() async {
       Grade grade = await (select(grades)
             ..where((g) => g.name.equals("normal")))
@@ -92,7 +92,10 @@ class AppDatabase extends _$AppDatabase {
       int newHours = grade.hours + entry.hours.value;
       await update(grades).replace(
           Grade(name: "normal", hours: newHours, grade: newGrade / newHours));
-      return await into(courses).insert(entry);
+      await into(courses).insert(entry);
+      return true;
+    }).catchError((e) {
+      return false;
     });
   }
 
@@ -114,7 +117,7 @@ class AppDatabase extends _$AppDatabase {
     return select(grades).watch();
   }
 
-  Future<int> createEnglishCourse(CoursesCompanion entry) {
+  Future<bool> createEnglishCourse(CoursesCompanion entry) {
     return transaction(() async {
       Grade grade = await (select(grades)
             ..where((g) => g.name.equals("english")))
@@ -124,7 +127,10 @@ class AppDatabase extends _$AppDatabase {
       int newHours = grade.hours + (entry.hours.value / 2).round();
       await update(grades).replace(
           Grade(name: "english", hours: newHours, grade: newGrade / newHours));
-      return await into(courses).insert(entry);
+      await into(courses).insert(entry);
+      return true;
+    }).catchError((e) {
+      return false;
     });
   }
 
@@ -148,7 +154,10 @@ class AppDatabase extends _$AppDatabase {
       newHours += entry.hours.value;
       await update(grades).replace(
           Grade(name: "normal", hours: newHours, grade: newGrade / newHours));
-      return await update(courses).replace(entry);
+      await update(courses).replace(entry);
+      return true;
+    }).catchError((e) {
+      return false;
     });
   }
 
@@ -173,7 +182,10 @@ class AppDatabase extends _$AppDatabase {
       newHours += (entry.hours.value / 2).round();
       await update(grades).replace(
           Grade(name: "english", hours: newHours, grade: newGrade / newHours));
-      return await update(courses).replace(entry);
+      await update(courses).replace(entry);
+      return true;
+    }).catchError((e) {
+      return false;
     });
   }
 
@@ -194,8 +206,11 @@ class AppDatabase extends _$AppDatabase {
               grade: germanCourses[i].grade));
         }
       }
-      return await update(grades)
+      await update(grades)
           .replace(const Grade(name: "german", hours: 0, grade: 0));
+      return true;
+    }).catchError((e) {
+      return false;
     });
   }
 
