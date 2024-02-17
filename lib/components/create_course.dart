@@ -201,9 +201,10 @@ class CreateCourseState extends State<CreateCourse> {
                       Navigator.of(context).pop();
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     "submit",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                        fontSize: const TextScaler.linear(1).scale(20)),
                   ),
                 ),
               )

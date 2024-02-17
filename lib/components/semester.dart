@@ -19,7 +19,7 @@ class _SemesterWidgetState extends State<SemesterWidget> {
       margin: const EdgeInsets.fromLTRB(12, 16, 12, 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.red,
+        color: const Color.fromARGB(255, 200, 200, 200),
       ),
       child: ExpansionTile(
         collapsedShape: const ContinuousRectangleBorder(
@@ -31,10 +31,11 @@ class _SemesterWidgetState extends State<SemesterWidget> {
           Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15),
-              ),
-              color: Colors.green,
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15),
+                  topLeft: Radius.circular(8),
+                  topRight: Radius.circular(8)),
+              color: Color.fromARGB(255, 240, 240, 240),
             ),
             child: Column(
               children: [
