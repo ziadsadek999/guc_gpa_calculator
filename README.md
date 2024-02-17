@@ -2,6 +2,7 @@
 <div align= "center">
   <img src="https://github.com/ziadsadek999/guc_gpa_calculator/assets/68449722/58bf8f88-c1b8-46da-86ff-e333de8967d3" alt="Image 1" width="250">
 </div>
+
 ## Motivation
 At the German University in Cairo, the GPA is calculated differently from other universities in Egypt (and perhaps globally). In addition, there are special cases when handling grades for German language and English courses. This has caused GUC students to struggle in estimating how their performance will affect their cumulative GPA. The GUC GPA Calculator simplifies the process, allowing students to
 easily estimate their cumulative GPA in a user-friendly manner, thereby keeping them informed about their performance.
