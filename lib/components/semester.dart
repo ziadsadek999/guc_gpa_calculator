@@ -44,7 +44,7 @@ class _SemesterWidgetState extends State<SemesterWidget> {
                     ? const Padding(
                         padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                         child: Text(
-                            "Enter the number of hours normally (2 x the number of weekly sessions), but the number of hours will be divided by two when calculating total GPA"),
+                            "Enter the number of hours as shown in the transcript, but the number of hours will be divided by two when calculating total GPA"),
                       )
                     : (widget.semester.id == Utils.db.germanSemesterId
                         ? const Padding(

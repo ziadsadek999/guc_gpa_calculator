@@ -181,7 +181,7 @@ class CreateCourseState extends State<CreateCourse> {
                         if (widget.semester!.id == Utils.db.englishSemesterId) {
                           valid =
                               await Utils.createEnglishCourse(CoursesCompanion(
-                            name: Value(name.text),
+                            name: Value(name.text.trim()),
                             hours: Value(int.parse(hours.text)),
                             grade: Value(grade),
                             semester: Value(widget.semester!.id),
@@ -189,7 +189,7 @@ class CreateCourseState extends State<CreateCourse> {
                         } else {
                           valid =
                               await Utils.createNormalCourse(CoursesCompanion(
-                            name: Value(name.text),
+                            name: Value(name.text.trim()),
                             hours: Value(int.parse(hours.text)),
                             grade: Value(grade),
                             semester: Value(widget.semester!.id),
@@ -201,7 +201,7 @@ class CreateCourseState extends State<CreateCourse> {
                           valid = await Utils.updateEnglishCourse(
                             CoursesCompanion(
                                 id: Value(widget.course!.id),
-                                name: Value(name.text),
+                                name: Value(name.text.trim()),
                                 hours: Value(int.parse(hours.text)),
                                 grade: Value(grade),
                                 semester: Value(widget.course!.semester)),
@@ -212,7 +212,7 @@ class CreateCourseState extends State<CreateCourse> {
                             valid = await Utils.updateGermanCourse(
                               CoursesCompanion(
                                   id: Value(widget.course!.id),
-                                  name: Value(name.text),
+                                  name: Value(name.text.trim()),
                                   hours: Value(int.parse(hours.text)),
                                   grade: Value(grade),
                                   semester: Value(widget.course!.semester)),
@@ -221,7 +221,7 @@ class CreateCourseState extends State<CreateCourse> {
                             valid = await Utils.updateNormalCourse(
                               CoursesCompanion(
                                   id: Value(widget.course!.id),
-                                  name: Value(name.text),
+                                  name: Value(name.text.trim()),
                                   hours: Value(int.parse(hours.text)),
                                   grade: Value(grade),
                                   semester: Value(widget.course!.semester)),
