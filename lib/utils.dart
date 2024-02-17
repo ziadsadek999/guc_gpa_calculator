@@ -84,7 +84,7 @@ class Utils {
     return db.getAllCourses();
   }
 
-  static Stream<Grade> getNormalGrade() {
+  static Stream<List<Grade>> getNormalGrade() {
     return db.getNormalGrade();
   }
 

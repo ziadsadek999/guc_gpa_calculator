@@ -26,7 +26,7 @@ class _MyHomePageState extends State<Home> {
           children: [
             const AccumulativeGpa(),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.45,
+              height: MediaQuery.of(context).size.height * 0.56,
               child: StreamBuilder(
                   stream: Utils.getAllSemesters(),
                   builder: (BuildContext context,
@@ -45,34 +45,6 @@ class _MyHomePageState extends State<Home> {
                     }
                   }),
             )
-
-            // SingleChildScrollView(
-            //   child: prefix.Column(
-            //     children: [
-            //       StreamBuilder(
-            //           stream: Utils.getAllSemesters(),
-            //           builder: (BuildContext context,
-            //               AsyncSnapshot<List<Semester>> snapshot) {
-            //             if (snapshot.hasData) {
-            //               return prefix.Column(
-            //                 children: [
-            //                   ...snapshot.data!
-            //                       .map((semester) =>
-            //                           SemesterWidget(semester: semester))
-            //                       .toList(),
-            //                   SizedBox(
-            //                       height:
-            //                           MediaQuery.of(context).size.height * 0.1),
-            //                 ],
-            //               );
-            //             } else {
-            //               return const Center(
-            //                   child: CircularProgressIndicator());
-            //             }
-            //           })
-            //     ],
-            //   ),
-            // ),
           ],
         ));
   }

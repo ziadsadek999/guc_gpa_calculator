@@ -96,9 +96,8 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
-  Stream<Grade> getNormalGrade() {
-    return (select(grades)..where((g) => g.name.equals("normal")))
-        .watchSingle();
+  Stream<List<Grade>> getNormalGrade() {
+    return (select(grades)..where((g) => g.name.equals("normal"))).watch();
   }
 
   Stream<Grade> getEnglishGrade() {
