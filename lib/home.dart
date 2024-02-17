@@ -29,7 +29,7 @@ class _MyHomePageState extends State<Home> {
               child: AccumulativeGpa(),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.54,
+              height: MediaQuery.of(context).size.height * 0.567,
               child: StreamBuilder(
                   stream: Utils.getAllSemesters(),
                   builder: (BuildContext context,
