@@ -1,16 +1,6 @@
-# guc_gpa_calculator
+# GUC GPA Calculator
 
-A new Flutter project.
+## Motivation
+At the German University in Cairo, the GPA is calculated differently from other universities in Egypt (and perhaps globally). In addition, there are special cases when handling grades for German language and English courses. This has caused GUC students to struggle in estimating how their performance will affect their cumulative GPA. The GUC GPA Calculator simplifies the process, allowing students to easily estimate their cumulative GPA in a user-friendly manner, thereby keeping them informed about their performance.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## APK file
