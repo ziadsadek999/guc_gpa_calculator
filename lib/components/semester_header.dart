@@ -13,8 +13,11 @@ class SemesterHeader extends StatefulWidget {
 class SemesterHeaderState extends State<SemesterHeader> {
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Text(widget.semester.name, style: const TextStyle(fontSize: 24)),
+    final fontSize = const TextScaler.linear(1).scale(16);
+    final bigFontSize = const TextScaler.linear(1).scale(20);
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(widget.semester.name,
+          style: TextStyle(fontSize: bigFontSize, fontWeight: FontWeight.bold)),
       StreamBuilder(
           stream: Utils.getSemesterCourses(widget.semester),
           builder:
@@ -26,7 +29,7 @@ class SemesterHeaderState extends State<SemesterHeader> {
                 }
                 return _buildNormalHeader(snapshot);
               } else {
-                return const Text(" - 0 hours", style: TextStyle(fontSize: 14));
+                return Text("0 hours", style: TextStyle(fontSize: fontSize));
               }
             } else {
               return const Center(child: CircularProgressIndicator());
@@ -36,21 +39,23 @@ class SemesterHeaderState extends State<SemesterHeader> {
   }
 
   Widget _buildGermanHeader(AsyncSnapshot<List<Course>> snapshot) {
+    final fontSize = const TextScaler.linear(1).scale(16);
     return Row(children: [
       Text(
-          " - ${Utils.calculateGrade(snapshot.data!).toStringAsFixed(2)} (${Utils.getGrade(Utils.calculateGrade(snapshot.data!))})",
-          style: const TextStyle(fontSize: 14)),
+          "${Utils.calculateGrade(snapshot.data!).toStringAsFixed(2)} (${Utils.getGrade(Utils.calculateGrade(snapshot.data!))})",
+          style: TextStyle(fontSize: fontSize)),
     ]);
   }
 
   Widget _buildNormalHeader(AsyncSnapshot<List<Course>> snapshot) {
+    final fontSize = const TextScaler.linear(1).scale(16);
     return Row(children: [
       Text(
-          " - ${snapshot.data!.map((e) => e.hours).reduce((a, b) => a + b)} hours",
-          style: const TextStyle(fontSize: 14)),
+          "${snapshot.data!.map((e) => e.hours).reduce((a, b) => a + b)} hours",
+          style: TextStyle(fontSize: fontSize)),
       Text(
           " - ${Utils.calculateGrade(snapshot.data!).toStringAsFixed(2)} (${Utils.getGrade(Utils.calculateGrade(snapshot.data!))})",
-          style: const TextStyle(fontSize: 14)),
+          style: TextStyle(fontSize: fontSize)),
     ]);
   }
 }

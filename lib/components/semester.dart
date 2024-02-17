@@ -19,43 +19,64 @@ class _SemesterWidgetState extends State<SemesterWidget> {
       margin: const EdgeInsets.fromLTRB(12, 16, 12, 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.grey[200],
+        color: Colors.red,
       ),
       child: ExpansionTile(
+        collapsedShape: const ContinuousRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16))),
+        shape: const ContinuousRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16))),
         title: SemesterHeader(semester: widget.semester),
         children: [
-          StreamBuilder(
-              stream: Utils.getSemesterCourses(widget.semester),
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Course>> snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    children: snapshot.data!
-                        .map((course) => Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                              child: CourseWidget(course: course),
-                            ))
-                        .toList(),
-                  );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              }),
-          if (widget.semester.id != Utils.db.germanSemesterId)
-            _buildAddCourse(),
+          Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+              ),
+              color: Colors.green,
+            ),
+            child: Column(
+              children: [
+                StreamBuilder(
+                    stream: Utils.getSemesterCourses(widget.semester),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<Course>> snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          children: snapshot.data!
+                              .map((course) => Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                    child: CourseWidget(course: course),
+                                  ))
+                              .toList(),
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }),
+                if (widget.semester.id != Utils.db.germanSemesterId)
+                  _buildAddCourse(),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildAddCourse() {
-    return ElevatedButton(
-      onPressed: () {
-        showNewCourseBottomSheet(context);
-      },
-      child: const Text(
-        "Add Course",
-        style: TextStyle(fontSize: 20),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: ElevatedButton(
+        onPressed: () {
+          showNewCourseBottomSheet(context);
+        },
+        child: Text(
+          "Add Course",
+          style: TextStyle(fontSize: const TextScaler.linear(1).scale(20)),
+        ),
       ),
     );
   }

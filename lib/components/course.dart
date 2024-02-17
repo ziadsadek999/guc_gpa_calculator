@@ -3,21 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:guc_gpa_calculator/components/create_course.dart';
 import 'package:guc_gpa_calculator/database.dart';
 import 'package:guc_gpa_calculator/utils.dart';
+import 'package:flutter/material.dart' as prefix;
 
 class CourseWidget extends StatelessWidget {
   final Course course;
   const CourseWidget({Key? key, required this.course}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final fontSize = const TextScaler.linear(1).scale(16);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(course.name, style: const TextStyle(fontSize: 16)),
-          Text("${course.hours} hours", style: const TextStyle(fontSize: 16)),
-          Text("${course.grade} (${Utils.getGrade(course.grade)})",
-              style: const TextStyle(fontSize: 16)),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            child: prefix.Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  course.name,
+                  style: TextStyle(
+                      fontSize: fontSize, fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                Text(
+                    "${course.hours} hours - ${course.grade} (${Utils.getGrade(course.grade)})",
+                    style: TextStyle(fontSize: fontSize)),
+              ],
+            ),
+          ),
           Row(
             children: [
               IconButton(
@@ -29,6 +45,7 @@ class CourseWidget extends StatelessWidget {
               !course.name.contains("German")
                   ? IconButton(
                       icon: const Icon(Icons.delete),
+                      color: Theme.of(context).colorScheme.error,
                       onPressed: () {
                         showDeleteConfirmationDialog(context);
                       },

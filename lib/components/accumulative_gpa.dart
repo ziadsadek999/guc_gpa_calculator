@@ -36,15 +36,16 @@ class AccumulativeGpaState extends State<AccumulativeGpa> {
               return Container(
                 margin: const EdgeInsets.fromLTRB(12, 16, 12, 16),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(16),
                   color: Colors.grey[200],
                 ),
                 child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8),
-                      child:
-                          Text("$msg:", style: TextStyle(fontSize: fontSize)),
+                      child: Text("$msg:",
+                          style: TextStyle(
+                              fontSize: fontSize, fontWeight: FontWeight.bold)),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8),
