@@ -133,6 +133,9 @@ class CreateCourseState extends State<CreateCourse> {
                           if (int.parse(value) == 1) {
                             return 'Courses Cannot Be less than 2 Hour Long';
                           }
+                          if (isEnglish() && int.parse(value) % 2 != 0) {
+                            return 'English courses must have an even number of hours';
+                          }
                           return null;
                         },
                       ),
