@@ -40,6 +40,19 @@ class _SemesterWidgetState extends State<SemesterWidget> {
             ),
             child: Column(
               children: [
+                widget.semester.id == Utils.db.englishSemesterId
+                    ? const Padding(
+                        padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                        child: Text(
+                            "Enter the number of hours normally (2 x the number of weekly sessions), but the number of hours will be divided by two when calculating total GPA"),
+                      )
+                    : (widget.semester.id == Utils.db.germanSemesterId
+                        ? const Padding(
+                            padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                            child: Text(
+                                "The latest German level is the only one considered in GPA calculations"),
+                          )
+                        : Container()),
                 StreamBuilder(
                     stream: Utils.getSemesterCourses(widget.semester),
                     builder: (BuildContext context,
