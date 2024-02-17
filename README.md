@@ -6,9 +6,9 @@ easily estimate their cumulative GPA in a user-friendly manner, thereby keeping 
 
 ## Screenshots
 <div align= "center">
-  <img src="[readme/img_p5_1.png](https://github.com/ziadsadek999/guc_gpa_calculator/assets/68449722/8a4f514e-7cb9-41bf-923e-251e71ec4a82)" alt="Image 1" width="200">
-  <img src="[readme/img_p5_2.png](https://github.com/ziadsadek999/guc_gpa_calculator/assets/68449722/c51683c3-5f5d-46c5-8166-ce1a05c186f4)" alt="Image 2" width="200">
-  <img src="[readme/img_p5_3.png](https://github.com/ziadsadek999/guc_gpa_calculator/assets/68449722/cd4e2094-1fc9-4dfd-9dfe-25ba5fa7550c)" alt="Image 3" width="200">
+  <img src="https://github.com/ziadsadek999/guc_gpa_calculator/assets/68449722/8a4f514e-7cb9-41bf-923e-251e71ec4a82" alt="Image 1" width="200">
+  <img src="https://github.com/ziadsadek999/guc_gpa_calculator/assets/68449722/c51683c3-5f5d-46c5-8166-ce1a05c186f4" alt="Image 2" width="200">
+  <img src="https://github.com/ziadsadek999/guc_gpa_calculator/assets/68449722/cd4e2094-1fc9-4dfd-9dfe-25ba5fa7550c" alt="Image 3" width="200">
 </div>
 
 ## APK file
