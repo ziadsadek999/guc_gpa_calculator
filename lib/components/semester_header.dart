@@ -42,7 +42,7 @@ class SemesterHeaderState extends State<SemesterHeader> {
     final fontSize = const TextScaler.linear(1).scale(16);
     return Row(children: [
       Text(
-          "${Utils.calculateGrade(snapshot.data!).toStringAsFixed(2)} (${Utils.getGrade(Utils.calculateGrade(snapshot.data!))})",
+          "${Utils.calculateGermanGrade(snapshot.data!).toStringAsFixed(2)} (${Utils.getGrade(Utils.calculateGrade(snapshot.data!))}) - ${Utils.getGermanLevel(snapshot.data!)}",
           style: TextStyle(fontSize: fontSize)),
     ]);
   }

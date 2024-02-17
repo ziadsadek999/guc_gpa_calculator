@@ -115,6 +115,26 @@ class Utils {
     return totalGrade / totalHours;
   }
 
+  static double calculateGermanGrade(List<Course> courses) {
+    courses.sort((a, b) => b.hours.compareTo(a.hours));
+    for (var course in courses) {
+      if (course.grade != 0) {
+        return course.grade;
+      }
+    }
+    return 0;
+  }
+
+  static String getGermanLevel(List<Course> courses) {
+    courses.sort((a, b) => b.hours.compareTo(a.hours));
+    for (var course in courses) {
+      if (course.grade != 0) {
+        return course.name;
+      }
+    }
+    return "N/A";
+  }
+
   static Grade aggregateGrades(List<Grade> grades) {
     double totalGrade = 0;
     double totalHours = 0;

@@ -24,9 +24,12 @@ class _MyHomePageState extends State<Home> {
         ),
         body: Column(
           children: [
-            const AccumulativeGpa(),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 8.0),
+              child: AccumulativeGpa(),
+            ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.56,
+              height: MediaQuery.of(context).size.height * 0.54,
               child: StreamBuilder(
                   stream: Utils.getAllSemesters(),
                   builder: (BuildContext context,

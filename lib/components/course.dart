@@ -42,7 +42,7 @@ class CourseWidget extends StatelessWidget {
                   showEditCourseBottomSheet(context);
                 },
               ),
-              !course.name.contains("German")
+              course.semester != Utils.db.germanSemesterId
                   ? IconButton(
                       icon: const Icon(Icons.delete),
                       color: Theme.of(context).colorScheme.error,
