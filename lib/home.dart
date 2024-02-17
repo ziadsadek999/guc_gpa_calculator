@@ -18,34 +18,62 @@ class _MyHomePageState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
           title: const Text("GUC GPA Calculator"),
         ),
-        body: SingleChildScrollView(
-          child: prefix.Column(
-            children: [
-              const AccumulativeGpa(),
-              StreamBuilder(
+        body: Column(
+          children: [
+            const AccumulativeGpa(),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.45,
+              child: StreamBuilder(
                   stream: Utils.getAllSemesters(),
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Semester>> snapshot) {
                     if (snapshot.hasData) {
-                      return prefix.Column(
-                        children: [
-                          ...snapshot.data!
-                              .map((semester) =>
-                                  SemesterWidget(semester: semester))
-                              .toList(),
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1),
-                        ],
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return SemesterWidget(
+                              semester: snapshot.data![index]);
+                        },
                       );
                     } else {
                       return const Center(child: CircularProgressIndicator());
                     }
-                  })
-            ],
-          ),
+                  }),
+            )
+
+            // SingleChildScrollView(
+            //   child: prefix.Column(
+            //     children: [
+            //       StreamBuilder(
+            //           stream: Utils.getAllSemesters(),
+            //           builder: (BuildContext context,
+            //               AsyncSnapshot<List<Semester>> snapshot) {
+            //             if (snapshot.hasData) {
+            //               return prefix.Column(
+            //                 children: [
+            //                   ...snapshot.data!
+            //                       .map((semester) =>
+            //                           SemesterWidget(semester: semester))
+            //                       .toList(),
+            //                   SizedBox(
+            //                       height:
+            //                           MediaQuery.of(context).size.height * 0.1),
+            //                 ],
+            //               );
+            //             } else {
+            //               return const Center(
+            //                   child: CircularProgressIndicator());
+            //             }
+            //           })
+            //     ],
+            //   ),
+            // ),
+          ],
         ));
   }
 

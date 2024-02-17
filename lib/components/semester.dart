@@ -15,28 +15,36 @@ class SemesterWidget extends StatefulWidget {
 class _SemesterWidgetState extends State<SemesterWidget> {
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: SemesterHeader(semester: widget.semester),
-      children: [
-        StreamBuilder(
-            stream: Utils.getSemesterCourses(widget.semester),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Course>> snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: snapshot.data!
-                      .map((course) => Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                            child: CourseWidget(course: course),
-                          ))
-                      .toList(),
-                );
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }),
-        _buildAddCourse(),
-      ],
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.grey[200],
+      ),
+      child: ExpansionTile(
+        title: SemesterHeader(semester: widget.semester),
+        children: [
+          StreamBuilder(
+              stream: Utils.getSemesterCourses(widget.semester),
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Course>> snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: snapshot.data!
+                        .map((course) => Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                              child: CourseWidget(course: course),
+                            ))
+                        .toList(),
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }),
+          if (widget.semester.id != Utils.db.germanSemesterId)
+            _buildAddCourse(),
+        ],
+      ),
     );
   }
 

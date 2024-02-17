@@ -16,12 +16,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
+            seedColor: const Color.fromARGB(255, 1, 83, 151),
             secondary: Colors.blueAccent,
             error: Colors.red,
             surface: Colors.white,
             onSurface: Colors.black,
-            primary: Colors.blue,
+            primary: const Color.fromARGB(255, 1, 83, 151),
             onPrimary: Colors.white,
             onSecondary: Colors.white,
             onBackground: Colors.black,
