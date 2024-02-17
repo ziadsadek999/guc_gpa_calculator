@@ -14,4 +14,9 @@ easily estimate their cumulative GPA in a user-friendly manner, thereby keeping 
   <img src="https://github.com/ziadsadek999/guc_gpa_calculator/assets/68449722/cd4e2094-1fc9-4dfd-9dfe-25ba5fa7550c" alt="Image 3" width="230">
 </div>
 
-## APK file
+## Download the app
+
+Click [here](https://drive.google.com/file/d/1lwWB-oNDK1tIGy6nYd2Yn8It0U9nFIeH/view?usp=sharing) to download the APK file to install the app on your android phone and try it!
+
+## Feedback
+Please feel free to reach out to give your feedback, report any issues, request new features, or contribute to the project :).
