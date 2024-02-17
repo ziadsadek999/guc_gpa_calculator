@@ -32,7 +32,12 @@ class SemesterHeaderState extends State<SemesterHeader> {
                 return Text("0 hours", style: TextStyle(fontSize: fontSize));
               }
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: const LinearProgressIndicator()),
+              );
             }
           }),
     ]);

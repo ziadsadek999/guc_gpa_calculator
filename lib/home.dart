@@ -44,7 +44,11 @@ class _MyHomePageState extends State<Home> {
                         },
                       );
                     } else {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              height: MediaQuery.of(context).size.width * 0.4,
+                              child: CircularProgressIndicator()));
                     }
                   }),
             )

@@ -68,7 +68,16 @@ class _SemesterWidgetState extends State<SemesterWidget> {
                               .toList(),
                         );
                       } else {
-                        return const Center(child: CircularProgressIndicator());
+                        return Padding(
+                          padding: const EdgeInsets.all(32),
+                          child: Center(
+                              child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.1,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.1,
+                                  child: CircularProgressIndicator())),
+                        );
                       }
                     }),
                 if (widget.semester.id != Utils.db.germanSemesterId)
